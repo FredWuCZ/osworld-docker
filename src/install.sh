@@ -162,7 +162,19 @@ convertImage() {
   html "Conversion completed..."
   return 0
 }
+ 
+findBackingFile() {
 
+  local ext="$1"
+  local file
+
+  file=$(find / -maxdepth 1 -type f -iname "Ubuntu.$ext" | head -n 1)
+  [ ! -s "$file" ] && file=$(find "$STORAGE" -maxdepth 1 -type f -iname "Ubuntu.$ext" | head -n 1)
+  detectType "$file" && return 0
+
+  return 1
+}
+ 
 findFile() {
 
   local ext="$1"
@@ -174,6 +186,9 @@ findFile() {
 
   return 1
 }
+ 
+findBackingFile "img" && qemu-img create -f qcow2 -b /Ubuntu.img -F qcow2 /boot.img
+findBackingFile "qcow2" && qemu-img create -f qcow2 -b /Ubuntu.qcow2 -F qcow2 /boot.qcow2
 
 findFile "iso" && return 0
 findFile "img" && return 0
