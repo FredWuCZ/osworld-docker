@@ -360,30 +360,26 @@ createDevice () {
 
   local index=""
   [ -n "$DISK_INDEX" ] && index=",bootindex=$DISK_INDEX"
-  local result=" -drive file=$DISK_FILE,id=$DISK_ID,format=$DISK_FMT,cache=$DISK_CACHE,aio=$DISK_IO,discard=$DISK_DISCARD,detect-zeroes=on"
+  local result=" -hda $DISK_FILE"
 
   case "${DISK_TYPE,,}" in
     "auto" )
       echo "$result"
       ;;
     "usb" )
-      result+=",if=none \
       -device usb-storage,drive=${DISK_ID}${index}"
       echo "$result"
       ;;
     "ide" )
-      result+=",if=none \
       -device ich9-ahci,id=ahci${DISK_INDEX},addr=$DISK_ADDRESS \
       -device ide-hd,drive=${DISK_ID},bus=ahci$DISK_INDEX.0,rotation_rate=$DISK_ROTATION${index}"
       echo "$result"
       ;;
     "blk" | "virtio-blk" )
-      result+=",if=none \
       -device virtio-blk-pci,drive=${DISK_ID},scsi=off,bus=pcie.0,addr=$DISK_ADDRESS,iothread=io2${index}"
       echo "$result"
       ;;
     "scsi" | "virtio-scsi" )
-      result+=",if=none \
       -device virtio-scsi-pci,id=${DISK_ID}b,bus=pcie.0,addr=$DISK_ADDRESS,iothread=io2 \
       -device scsi-hd,drive=${DISK_ID},bus=${DISK_ID}b.0,channel=0,scsi-id=0,lun=0,rotation_rate=$DISK_ROTATION${index}"
       echo "$result"
@@ -647,7 +643,7 @@ else
   addDisk "$DISK4_FILE" "$DISK_TYPE" "disk4" "$DISK4_SIZE" "6" "0xd" "$DISK_FMT" "$DISK_IO" "$DISK_CACHE" || exit $?
 fi
 
-DISK_OPTS+=" -object iothread,id=io2"
+DISK_OPTS+=""
 
 html "Initialized disks successfully..."
 return 0

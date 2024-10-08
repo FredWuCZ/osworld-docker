@@ -6,7 +6,7 @@ set -Eeuo pipefail
 : "${MONITOR:="telnet:localhost:7100,server,nowait,nodelay"}"
 : "${SMP:="$CPU_CORES,sockets=1,dies=1,cores=$CPU_CORES,threads=1"}"
 
-DEF_OPTS="-nodefaults"
+DEF_OPTS=""
 SERIAL_OPTS="-serial $SERIAL"
 CPU_OPTS="-cpu $CPU_FLAGS -smp $SMP"
 USB_OPTS="-device $USB -device usb-tablet"

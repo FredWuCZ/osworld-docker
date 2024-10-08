@@ -31,8 +31,8 @@ case "${BOOT_MODE,,}" in
     ;;
   "uefi" | "" )
     BOOT_MODE="uefi"
-    ROM="OVMF_CODE_4M.fd"
-    VARS="OVMF_VARS_4M.fd"
+    ROM="edk2-x86_64-code.fd"
+    VARS="edk2-x86_64-code.fd"
     ;;
   "secure" )
     SECURE="on"
@@ -41,15 +41,15 @@ case "${BOOT_MODE,,}" in
     VARS="OVMF_VARS_4M.secboot.fd"
     ;;
   "windows" | "windows_plain" )
-    ROM="OVMF_CODE_4M.fd"
-    VARS="OVMF_VARS_4M.fd"
+    ROM="edk2-x86_64-code.fd"
+    VARS="edk2-x86_64-code.fd"
     ;;
   "windows_secure" )
     TPM="Y"
     SECURE="on"
     BOOT_DESC=" securely"
-    ROM="OVMF_CODE_4M.ms.fd"
-    VARS="OVMF_VARS_4M.ms.fd"
+    ROM="edk2-x86_64-code.fd"
+    VARS="edk2-x86_64-code.fd"
     ;;
   "windows_legacy" )
     BOOT_DESC=" (legacy)"
@@ -81,8 +81,7 @@ case "${BOOT_MODE,,}" in
       BOOT_OPTS+=" -global driver=cfi.pflash01,property=secure,value=on"
     fi
 
-    BOOT_OPTS+=" -drive file=$DEST.rom,if=pflash,unit=0,format=raw,readonly=on"
-    BOOT_OPTS+=" -drive file=$DEST.vars,if=pflash,unit=1,format=raw"
+    BOOT_OPTS+=" -pflash $DEST.rom"
 
     ;;
 esac
