@@ -42,6 +42,7 @@ RUN set -eu && \
 COPY --chmod=755 ./src /run/
 COPY --chmod=755 ./web /var/www/
 COPY --chmod=744 ./web/nginx.conf /etc/nginx/sites-enabled/web.conf
+COPY --chmod=444 ./uefi/edk2-x86_64-code.fd /usr/share/OVMF/edk2-x86_64-code.fd
 
 VOLUME /storage
 EXPOSE 22 5900 8006

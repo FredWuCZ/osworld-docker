@@ -559,9 +559,9 @@ if [ -f "$BOOT" ] && [ -s "$BOOT" ]; then
     *".iso" )
         DISK_OPTS+=$(addMedia "$BOOT" "$MEDIA_TYPE" "$BOOT_INDEX" "0x5") ;;
     *".img" | *".raw" )
-        DISK_OPTS+=$(createDevice "$BOOT" "$DISK_TYPE" "$BOOT_INDEX" "0x5" "raw" "$DISK_IO" "$DISK_CACHE") ;;
+        DISK_OPTS+="-hda $BOOT" ;;
     *".qcow2" )
-        DISK_OPTS+=$(createDevice "$BOOT" "$DISK_TYPE" "$BOOT_INDEX" "0x5" "qcow2" "$DISK_IO" "$DISK_CACHE") ;;
+        DISK_OPTS+="-hda $BOOT" ;;
     * )
         error "Invalid BOOT image specified, extension \".${BOOT/*./}\" is not recognized!" && exit 80 ;;
   esac
